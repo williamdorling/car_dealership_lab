@@ -1,4 +1,4 @@
-const { Accumulator } = require("bser");
+
 
 const Dealership = function(name, maxNoOfCars){
     this.name = name,
@@ -10,7 +10,9 @@ Dealership.prototype.countCarsInStock = function(){
 }
 
 Dealership.prototype.addCarToStock = function(car){
-    this.stock.push(car);
+    if (this.stock.length < this.maxNoOfCars){
+        this.stock.push(car);
+    }
 }
 
 Dealership.prototype.returnManufacturers = function(){
@@ -23,6 +25,14 @@ Dealership.prototype.findCarsFromManufacturer = function(manufacturer){
 
 Dealership.prototype.totalValueOfCarsInStock = function(){
     return this.stock.reduce((accumulator, car) => accumulator + car.price, 0)
+}
+
+Dealership.prototype.sellCar = function (customer, car){
+    if (customer.wallet >= car.price) {
+        customer.buyCar(car);
+        carIndex = this.stock.indexOf(car);
+        this.stock.splice(carIndex, 1);
+    }
 }
 
 module.exports = Dealership;
